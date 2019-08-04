@@ -1,9 +1,11 @@
 # Python 2.6 compatibility
 # argparse==1.2.1
-dask-core
-pandas
+#dask-core
+pandas>=0.18
 requests
 lxml
-tempfile
-sqlite3
-multiprocessing
+dask[dataframe]
+#python-logilab-common
+
+# Testing
+pytest>=4.6
