@@ -4,9 +4,6 @@
 pandas>=0.18
 requests
 lxml
-#tempfile
-sqlite3
-#multiprocessing
 
 # Testing
 pytest>=2.5.1
