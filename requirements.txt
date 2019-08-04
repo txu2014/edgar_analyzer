@@ -6,7 +6,7 @@ requests
 lxml
 
 # Testing
-pytest>=2.5.1
+pytest==2.5.1
 py==1.4.19
 mock==1.0.1
 
