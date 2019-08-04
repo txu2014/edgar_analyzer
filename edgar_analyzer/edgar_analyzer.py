@@ -2,6 +2,7 @@ import pandas as pd
 import os
 import sys
 #from bs4 import BeautifulSoup as bs
+
 from .utils import *
 
 class EdgarBase(object):

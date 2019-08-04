@@ -3,7 +3,7 @@ import os
 import requests as req
 import sys
 import re
-#import dask.dataframe as dd
+import dask.dataframe as dd
 from lxml import etree
 import io
 import logging
