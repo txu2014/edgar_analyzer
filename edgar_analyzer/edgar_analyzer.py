@@ -162,9 +162,9 @@ class EdgarParser(EdgarBase):
         if os.path.exists(f_txt):
             with open(f_txt, 'r+') as f:
                 data = f.read()
-                re_header = re.search('<SEC-HEADER>([\s\S]*?)\n<\/SEC-HEADER>', data).group(1)
+                re_header = re.search(r'<SEC-HEADER>([\s\S]*?)\n<\/SEC-HEADER>', data).group(1)
                 if not header_only:
-                    re_doc = re.findall('<DOCUMENT>\n([\s\S]*?)\n<\/DOCUMENT>', data)
+                    re_doc = re.findall(r'<DOCUMENT>\n([\s\S]*?)\n<\/DOCUMENT>', data)
         else:
             logger.error('file not exists. file={f}'.format(f=f_txt))
         dict_header_mapping = {"ACCESSION NUMBER": 'filing_id',

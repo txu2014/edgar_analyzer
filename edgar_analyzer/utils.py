@@ -108,13 +108,13 @@ def download_list(list_path, dir_report, uri='https://www.sec.gov/Archives/', fo
 
 
 def re_string(keyword, data):
-    s = re.search('<{kw}>([\s\S]*?)\n'.format(kw=keyword), data)
+    s = re.search(r'<{kw}>([\s\S]*?)\n'.format(kw=keyword), data)
     res = s.group(1) if s else None
     return res
 
 
 def re_tag(tag, data, find_all=False):
-    s = re.search('<{tag}>\n([\s\S]*?)\n<\/{tag}>'.format(tag=tag), data)
+    s = re.search(r'<{tag}>\n([\s\S]*?)\n<\/{tag}>'.format(tag=tag), data)
     res = s.group(1) if s else None
     return res
 
@@ -138,7 +138,7 @@ def parse_ins(txt_ins, has_dimension=False):
     if 'xbrli' not in ns_ins.keys():
         logger.info('fix missing namespace xbrli. {s}'.format(s=ns_ins))
         ns_ins['xbrli'] = "http://www.xbrl.org/2003/instance"
-    list_context = r_ins.findall('xbrli:context', namespaces=ns_ins)
+    list_context = r_ins.findall(r'xbrli:context', namespaces=ns_ins)
     list_period = [dict(i.attrib, **node2dict(i.find('xbrli:period', namespaces=ns_ins))) for i in list_context]
     df_period = pd.DataFrame(list_period)
     # if 'id' not in df_period.columns:
