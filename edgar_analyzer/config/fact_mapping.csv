@@ -1,0 +1,11 @@
+item,name
+us-gaap:Revenues,is_revenue
+us-gaap:CostOfRevenue,is_cogs
+us-gaap:GrossProfit,is_gross_profit
+us-gaap:SellingGeneralAndAdministrativeExpense,is_sga
+us-gaap:NetIncomeLoss,is_net_income
+us-gaap:AssetsCurrent,bs_current_asset
+us-gaap:Assets,bs_total_asset
+dei:DocumentType,form_type
+dei:TradingSymbol,symbol
+dei:AmendmentFlag,amend_flag
