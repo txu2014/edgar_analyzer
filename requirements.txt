@@ -4,7 +4,7 @@
 pandas>=0.18
 requests
 lxml
-python-logilab-common
+#python-logilab-common
 
 # Testing
 pytest==2.5.1
