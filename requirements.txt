@@ -1,6 +1,6 @@
 # Python 2.6 compatibility
 # argparse==1.2.1
-dask-core
+#dask-core
 pandas
 requests
 lxml
