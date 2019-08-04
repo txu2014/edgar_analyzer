@@ -1,15 +1,15 @@
 # Python 2.6 compatibility
 # argparse==1.2.1
 #dask-core
-pandas
+pandas>=1.8
 requests
 lxml
-tempfile
+#tempfile
 sqlite3
-multiprocessing
+#multiprocessing
 
 # Testing
-pytest==2.5.1
+pytest>=2.5.1
 py==1.4.19
 mock==1.0.1
 
