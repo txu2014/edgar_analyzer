@@ -7,4 +7,4 @@ lxml
 #python-logilab-common
 
 # Testing
-pytest=5.0
+pytest>=4.6
