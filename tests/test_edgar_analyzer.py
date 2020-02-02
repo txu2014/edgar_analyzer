@@ -16,7 +16,7 @@ class TestEdgarParser(TestCase):
 class TestEdgarDownloader(TestCase):
     def test_dir_master_exists(self):
         ed = ea.EdgarDownloader()
-        dd = ed.dir_download
+        dd = ed.dir_edgar
         self.assertIsNotNone(dd)
 
     def test_filings_between_ibm_2019_10q(self):

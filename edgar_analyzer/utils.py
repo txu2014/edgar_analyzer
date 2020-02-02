@@ -8,22 +8,22 @@ from lxml import etree
 import io
 import logging
 
-logging.basicConfig(level=logging.DEBUG,
-                    format='%(asctime)s %(name)-12s %(levelname)-8s %(message)s',
+logging.basicConfig(level=logging.INFO,
+                    format='%(asctime)s|%(name)s|%(levelname)s|%(message)s',
                     datefmt='%m-%d %H:%M',
                     # filename='/temp/myapp.log',
                     filemode='w')
 # console = logging.StreamHandler()
 logger = logging.getLogger('EdgarAnalyzer')
-#logger.setLevel('DEBUG')
+logger.setLevel('INFO')
 # logger.addHandler(console)
 
 dir_curr = os.path.abspath(os.path.dirname(__file__))
 
 
-def symbol2cik(symbol):
+def ticker2cik(symbol):
     symbol = str(symbol).upper()
-    cik = symbol2cik_sec(symbol) if symbol2cik_file(symbol) is None else symbol2cik_file(symbol)
+    cik = ticker2cik_sec(symbol) if ticker2cik_file(symbol) is None else ticker2cik_file(symbol)
     return cik
 
 
@@ -36,7 +36,7 @@ def conv_list(i):
 
     return list_res
 
-def symbol2cik_file(symbol):
+def ticker2cik_file(symbol):
     symbol = str(symbol).upper()
     path_cik_mapping = os.path.join(dir_curr, 'config', 'cik_mapping.csv')
     df_mapping = pd.read_csv(path_cik_mapping).set_index('Ticker')['CIK']
@@ -45,14 +45,14 @@ def symbol2cik_file(symbol):
             cik = str(df_mapping[symbol]).zfill(10)
         else:
             logger.warning('non-unique CIK for Symbol={s} in cik_mapping.csv'.format(s=symbol))
-            cik = symbol2cik_sec(symbol)
+            cik = ticker2cik_sec(symbol)
     else:
         logger.warning('Symbol not found in cik_mapping.csv.')
         cik = None
     return cik
 
 
-def symbol2cik_sec(symbol, update_mapping=True):
+def ticker2cik_sec(symbol, update_mapping=True):
     symbol = str(symbol).upper()
     try:
         uri = "http://www.sec.gov/cgi-bin/browse-edgar"
@@ -80,7 +80,7 @@ def update_cik(symbol, cik):
     df_mapping.to_csv(path_cik_mapping)
 
 
-def download_list(list_path, dir_report, uri='https://www.sec.gov/Archives/', force_download=False):
+def download_list(list_path, dir_report, uri='https://www.sec.gov/Archives/', force_download=False, threads_number=8):
     from multiprocessing.pool import ThreadPool
     list_file = [os.path.join(dir_report, p) for p in list_path]
     if not force_download:
@@ -95,16 +95,27 @@ def download_list(list_path, dir_report, uri='https://www.sec.gov/Archives/', fo
             dir_name = os.path.dirname(path_save)
             if not os.path.isdir(dir_name):
                 os.makedirs(dir_name)
-            with open(path_save, 'wb') as f:
-                for chunk in r:
-                    f.write(chunk)
+            with open(path_save, 'w') as f:
+                f.write(r.content.decode('latin-1'))
+            # with open(path_save, 'wb') as f:
+            #     for chunk in r:
+            #         f.write(chunk)
         else:
             logger.error('error downloading {f}'.format(f=uri + p))
         return path_save
-    results = ThreadPool(4).imap_unordered(download_url, list_path)
+    with ThreadPool(threads_number) as th:
+        results = list(th.imap_unordered(download_url, list_path))
+    #res = [p for p in list_path if os.path.exists(os.path.join(dir_report, p))]
+    list_res = []
+    for f in list_file:
+        if os.path.exists(f):
+            list_res.append(f)
+        else:
+            logger.error('cannot find filing file: '+f)
+    #results = list(ThreadPool(threads_number).imap_unordered(download_url, list_path))
     # for l in results:
     #     logger.info('downloaded '+l)
-    return list_file
+    return list_res
 
 
 def re_string(keyword, data):
